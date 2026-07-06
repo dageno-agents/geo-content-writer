@@ -25,45 +25,46 @@ Explore all repos / 查看全部项目: [github.com/dageno-agents](https://githu
 
 <!-- DAGENO_AGENT_NAV_END -->
 
-# Benchmark Suite
+# GEO Content Writer 中文说明
 
-This folder defines a lightweight benchmark pack for validating the official production flow from:
+> 把 Dageno 发现的 prompt opportunity 和 fanout 数据，变成可执行的内容生产 backlog、编辑 brief、草稿包、审核包和发布前质检。
 
-- backlog row
+## 它解决什么问题
+
+- 很多团队拿到 AI 搜索里的 prompt 数据后，会直接让模型写文章，结果内容很薄、角度重复，也不方便编辑审核。
+- 这个项目补的是中间那一层：先把 fanout 变成可管理的生产对象，再让人或 agent 去写。
+
+## 什么时候用它
+
+- 你已经在 Dageno 里发现了一批 prompt opportunities。
+- 你希望从真实 fanout 里挑选文章角度，而不是靠关键词或行业模板猜。
+- 你想让外部写作 agent 按 section-by-section 的 contract 执行，而不是凭一个大 prompt 发挥。
+
+## 和相邻项目有什么区别
+
+- `dageno-online-topic-prompt-generator` 负责从真实网站生成 Topic 和 Prompt。
+- `geo-content-writer` 负责在已有 Dageno fanout 的基础上，把一个具体机会变成文章生产包。
+- `seo-geo-content-engine` 更偏从关键词或内容 brief 进入完整 SEO/GEO 内容生产。
+
+## 主要输出
+
+- fanout backlog JSON
 - editorial brief
-- draft sections
-- section review
-- assembly review
-- final gate
+- draft package
+- review package
+- writer prompt
+- publish-ready markdown 或 WordPress handoff
 
-## Goal
+## 快速开始
 
-Validate four things against real project examples:
+1. `PYTHONPATH=src python -m geo_content_writer.cli build-fanout-backlog --days 7 --max-prompts 10`
+2. `PYTHONPATH=src python -m geo_content_writer.cli select-backlog-items --top-n 10`
+3. `PYTHONPATH=src python -m geo_content_writer.cli publish-ready-article --backlog-id <row-id>`
 
-1. articles do not collapse into near-duplicates
-2. drafts sound more like edited blog posts than generic generated templates
-3. cluster roles stay differentiated
-4. the final payload provides enough structure for an external agent to execute the workflow
+## 给中文读者的说明
 
-## Cases
+这是当前公开仓库的中文本地化入口。英文 README.md 仍然保留更完整的原始说明、命令细节和历史上下文；中文版本优先帮助国内用户快速理解这个项目是做什么的、什么时候该用、以及它和其他 Dageno Agent 项目的区别。
 
-- travel shortlist
-- travel comparison
-- enterprise category
-- enterprise evaluation
+## License
 
-## Suggested scoring
-
-- `distinctness`: 1-5
-- `naturalness`: 1-5
-- `decision_support`: 1-5
-- `brand_fit`: 1-5
-- `cluster_role_clarity`: 1-5
-
-## Recommended usage
-
-1. produce the payload from the official command path
-2. draft sections from `draft_package.draft_sections`
-3. run section reviews from `review_package.section_review_contract`
-4. assemble and run the final gate
-5. record scores in `benchmark_manifest.json`
+请参考英文 README 和仓库内的 LICENSE 文件。
